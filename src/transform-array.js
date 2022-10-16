@@ -13,21 +13,35 @@ const { NotImplementedError } = require('../extensions/index.js');
  * transform([1, 2, 3, '--discard-prev', 4, 5]) => [1, 2, 4, 5]
  * 
  */
-function transform(arr) {
-  if (!Array.isArray(arr)) {    throw new Error();   }
-  if (arr.length === 0) return [];
-
-  for (let i=1; i<arr.length; i++) {
-    var pos = arr.indexOf('--discard-next');
-    n = 2;
-    var arr1=[];
-if (arr[i]=='--discard-next') { return arr1= arr.splice(pos, n); }
-
-
+ function transform(arr) {
+  if(!Array.isArray(arr)) throw Error;
+  let result = [];
+  for(let i = 0; i < arr.length; i++) {
+    switch (arr[i]) {
+      case '--discard-next':
+        if(i + 1 < arr.length) {
+          ++i;
+          if(arr[i + 1] == '--double-prev' || arr[i + 1] == '--discard-prev')
+            ++i;                                                              
+          break;
+        }
+      case '--double-next':
+        if(i + 1 < arr.length)
+          result.push(arr[i + 1]); break;
+      case '--discard-prev':
+        if(result.length)
+          result.pop(); break;
+      case '--double-prev':
+        if(result.length)
+          result.push(result[result.length - 1]); break;
+      default:
+        result.push(arr[i]); break;
+    }
   }
+  return result
+};
 
 
-}
 
 module.exports = {
   transform

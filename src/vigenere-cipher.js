@@ -49,7 +49,7 @@ const { NotImplementedError } = require('../extensions/index.js');
  
      decrypt (message, key) {
          if (message === undefined || key === undefined) {
-             throw new Error()
+             throw new Error("Incorrect arguments!")
          }
  
          let shift = 0;
